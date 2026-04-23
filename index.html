@@ -57,7 +57,7 @@
             z-index: -3;
         }
 
-        /* OVERLAY DE CLIQUE (Para liberar áudio) */
+        /* OVERLAY DE CLIQUE */
         .start-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -73,6 +73,17 @@
             transition: opacity 0.8s ease;
         }
 
+        /* Efeito pulsante no texto inicial */
+        .start-overlay span {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
         /* CAIXA DE TEXTO CENTRAL */
         .container {
             width: 90%;
@@ -80,19 +91,37 @@
             background-color: var(--box-bg);
             padding: 50px;
             border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Toque extra de vidro */
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* Suporte para Safari */
             text-align: center;
             z-index: 10;
+            
+            /* Preparando a animação de entrada */
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Classe que o JS vai adicionar para a caixa aparecer */
+        .container.show {
+            animation: slideUpFade 1.2s ease forwards 0.3s;
+        }
+
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Borda animada em cima da caixa */
         .container::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 8px;
+            top: 0; left: 0; width: 100%; height: 6px;
             background: linear-gradient(90deg, #ffffff, #8a8a8a, #d4d4d4, #ffffff);
             background-size: 200% 200%;
             animation: gradientMove 4s ease infinite;
@@ -109,6 +138,7 @@
             color: var(--main-light);
             margin-top: 0;
             margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Melhora a leitura */
         }
 
         .text-content p {
@@ -116,6 +146,20 @@
             line-height: 1.6;
             color: var(--main-accent);
             margin-bottom: 15px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        /* Ajustes para telas menores (celulares) */
+        @media (max-width: 600px) {
+            .container {
+                padding: 35px 25px;
+            }
+            .text-content h2 {
+                font-size: 1.8em;
+            }
+            .text-content p {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
@@ -132,36 +176,17 @@
         <source src="https://files.catbox.moe/unv3h8.mp4" type="video/mp4">
     </video>
 
-    <audio id="bg-music" loop>
-        <source src="https://files.catbox.moe/unv3h8.mp4" type="audio/mpeg">
-    </audio>
-
-    <div class="container">
+    <div class="container" id="message-box">
         <div class="text-content">
-            <h2>Miau </h2>
-            <p>Feliz aniversario meu fofo, 23 aninhos</p>
+            <h2>Miau ❤️</h2>
+            <p>Feliz aniversário meu fofo, 23 aninhos!</p>
             <p>Muitos aninhos de vida pra vc, quero que viva bastante pra eu te aproveitar muito rs</p>
-            <p>Espero que seu dia seja muito especial! te amo muito!!</p>
+            <p>Espero que seu dia seja muito especial! Te amo muito!!</p>
         </div>
     </div>
 </div>
 
 <script>
-    // Lógica do clique para revelar o texto e tocar a música
     document.getElementById('start-overlay').addEventListener('click', function() {
         // Esmaece a tela preta inicial
         this.style.opacity = '0';
-        
-        setTimeout(() => { 
-            this.style.display = 'none'; 
-        }, 800);
-
-        // Inicia a música
-        const music = document.getElementById('bg-music');
-        music.volume = 0.5; // Ajuste o volume se precisar (0.0 a 1.0)
-        music.play();
-    });
-</script>
-
-</body>
-</html>
