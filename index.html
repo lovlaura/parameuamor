@@ -1,217 +1,166 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para meu amor</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-page: #050505;
-            --box-bg: rgba(15, 15, 15, 0.40);
-            --text-color: #ffffff;
-            --main-accent: #d4d4d4;
-            --main-light: #ffffff;
-            --alt-accent: #a3a3a3;
-            --bg-dots: #1f1f1f;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para meu amor</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #050505;
+            --box-bg: rgba(15, 15, 15, 0.40);
+            --text-color: #ffffff;
+            --main-accent: #d4d4d4;
+            --main-light: #ffffff;
+            --alt-accent: #a3a3a3;
+            --bg-dots: #1f1f1f;
+        }
 
-        body {
-            background-color: var(--bg-page); 
-            background-image: radial-gradient(var(--bg-dots) 2.5px, transparent 2.5px), radial-gradient(var(--bg-dots) 2.5px, transparent 2.5px);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            color: var(--text-color);
-            font-family: 'Quicksand', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+        body {
+            background-color: var(--bg-page); 
+            background-image: radial-gradient(var(--bg-dots) 2.5px, transparent 2.5px), radial-gradient(var(--bg-dots) 2.5px, transparent 2.5px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-        /* VÍDEO DE FUNDO */
-        .bg-video {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover;
-            opacity: 0.40;
-        }
+        /* VÍDEO DE FUNDO */
+        .bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover;
+            opacity: 0.40;
+        }
 
-        .bg-color {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-page);
-            z-index: -3;
-        }
+        .bg-color {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-page);
+            z-index: -3;
+        }
 
-        /* OVERLAY DE CLIQUE */
-        .start-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000000;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--main-accent);
-            font-size: 1.5em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.8s ease;
-        }
+        /* OVERLAY DE CLIQUE (Para liberar áudio) */
+        .start-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--main-accent);
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.8s ease;
+        }
 
-        .start-overlay span {
-            animation: pulse 1.5s infinite;
-        }
+        /* CAIXA DE TEXTO CENTRAL */
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background-color: var(--box-bg);
+            padding: 50px;
+            border-radius: 30px; 
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            text-align: center;
+            z-index: 10;
+        }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
+        /* Borda animada em cima da caixa */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, #ffffff, #8a8a8a, #d4d4d4, #ffffff);
+            background-size: 200% 200%;
+            animation: gradientMove 4s ease infinite;
+        }
 
-        /* CAIXA DE TEXTO CENTRAL */
-        .container {
-            width: 90%;
-            max-width: 700px;
-            background-color: var(--box-bg);
-            padding: 50px;
-            border-radius: 30px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); 
-            text-align: center;
-            z-index: 10;
-            
-            opacity: 0;
-            transform: translateY(30px);
-        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        .container.show {
-            animation: slideUpFade 1.2s ease forwards 0.3s;
-        }
+        .text-content h2 {
+            font-size: 2.2em;
+            color: var(--main-light);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
 
-        @keyframes slideUpFade {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 6px;
-            background: linear-gradient(90deg, #ffffff, #8a8a8a, #d4d4d4, #ffffff);
-            background-size: 200% 200%;
-            animation: gradientMove 4s ease infinite;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .text-content h2 {
-            font-size: 2.2em;
-            color: var(--main-light);
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
-        }
-
-        .text-content p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            color: var(--main-accent);
-            margin-bottom: 15px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 35px 25px;
-            }
-            .text-content h2 {
-                font-size: 1.8em;
-            }
-            .text-content p {
-                font-size: 1.1em;
-            }
-        }
-    </style>
+        .text-content p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: var(--main-accent);
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
 
 <div id="start-overlay" class="start-overlay">
-    <span>Clique para descobrir</span>
+    <span>Clique para descobrir</span>
 </div>
 
 <div id="main-content">
-    <div class="bg-color"></div>
+    <div class="bg-color"></div>
 
-    <video autoplay loop muted playsinline id="bg-video" class="bg-video">
-        <source src="https://files.catbox.moe/unv3h8.mp4" type="video/mp4">
-    </video>
+    <video autoplay loop muted playsinline id="bg-video" class="bg-video">
+        <source src="https://files.catbox.moe/unv3h8.mp4" type="video/mp4">
+    </video>
 
-    <div class="container" id="message-box">
-        <div class="text-content">
-            <h2>Miau ❤️</h2>
-            <p>Feliz aniversário meu fofo, 23 aninhos!</p>
-            <p>Muitos aninhos de vida pra vc, quero que viva bastante pra eu te aproveitar muito rs</p>
-            <p>Espero que seu dia seja muito especial! Te amo muito!!</p>
-        </div>
-    </div>
+    <audio id="bg-music" loop>
+        <source src="https://files.catbox.moe/unv3h8.mp4" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <div class="text-content">
+            <h2>Miau </h2>
+            <p>Feliz aniversario meu fofo, 23 aninhos</p>
+            <p>Muitos aninhos de vida pra vc, quero que viva bastante pra eu te aproveitar muito rs</p>
+            <p>Espero que seu dia seja muito especial! te amo muito!!</p>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.getElementById('start-overlay').addEventListener('click', function() {
-        const overlay = this;
-        const video = document.getElementById('bg-video');
-        const messageBox = document.getElementById('message-box');
+    // Lógica do clique para revelar o texto e tocar a música
+    document.getElementById('start-overlay').addEventListener('click', function() {
+        // Esmaece a tela preta inicial
+        this.style.opacity = '0';
+        
+        setTimeout(() => { 
+            this.style.display = 'none'; 
+        }, 800);
 
-        // 1. Esmaece a tela preta inicial
-        overlay.style.opacity = '0';
-        
-        // 2. Remove da tela e mostra o texto depois de 800ms
-        setTimeout(() => { 
-            overlay.style.display = 'none'; 
-            messageBox.classList.add('show');
-        }, 800);
-
-        // 3. Força o vídeo a dar play COM SOM com segurança
-        if (video) {
-            video.muted = false; // Tira o mudo
-            video.volume = 0.5;  // Ajusta o volume (0.0 a 1.0)
-            
-            // Força o play() caso o navegador tenha pausado o autoplay
-            let playPromise = video.play();
-            
-            // Evita erros no console se o navegador for muito restrito
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Navegador bloqueou o áudio automático:", error);
-                });
-            }
-        }
-    });
+        // Inicia a música
+        const music = document.getElementById('bg-music');
+        music.volume = 0.5; // Ajuste o volume se precisar (0.0 a 1.0)
+        music.play();
+    });
 </script>
 
 </body>
