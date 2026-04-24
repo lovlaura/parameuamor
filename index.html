@@ -156,15 +156,60 @@
                 font-size: 1.1em;
             }
         }
+
+        /* --- CSS ADICIONADO PARA O CONTADOR --- */
+        .hidden { display: none !important; }
+
+        .wait-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .wait-screen h1 {
+            font-size: 2.5em;
+            color: var(--main-light);
+            margin-bottom: 10px;
+        }
+
+        .wait-screen p {
+            color: var(--alt-accent);
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        #countdown {
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--main-accent);
+            background: var(--box-bg);
+            padding: 20px 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
 
-<div id="start-overlay" class="start-overlay">
+<div id="wait-screen" class="wait-screen">
+    <h1></h1>
+    <p></p>
+    <div id="countdown">Carregando...</div>
+</div>
+
+<div id="start-overlay" class="start-overlay hidden">
     <span>Clique para descobrir</span>
 </div>
 
-<div id="main-content">
+<div id="main-content" class="hidden">
     <div class="bg-color"></div>
 
     <video autoplay loop muted playsinline id="bg-video" class="bg-video">
@@ -182,6 +227,36 @@
 </div>
 
 <script>
+    // --- LÓGICA DO CONTADOR ADICIONADA ---
+    const targetDate = new Date('April 29, 2026 00:00:00').getTime();
+    const waitScreen = document.getElementById('wait-screen');
+    const startOverlayWrapper = document.getElementById('start-overlay');
+    const mainContentWrapper = document.getElementById('main-content');
+    const countdownElement = document.getElementById('countdown');
+
+    const interval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance <= 0) {
+            clearInterval(interval);
+            // Libera o site quando chegar a data
+            waitScreen.classList.add('hidden');
+            startOverlayWrapper.classList.remove('hidden');
+            mainContentWrapper.classList.remove('hidden');
+        } else {
+            // Atualiza os números
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const format = (num) => num < 10 ? '0' + num : num;
+            countdownElement.innerHTML = `${format(days)}d ${format(hours)}h ${format(minutes)}m ${format(seconds)}s`;
+        }
+    }, 1000);
+
+    // --- SEU SCRIPT ORIGINAL INTACTO ---
     document.getElementById('start-overlay').addEventListener('click', function() {
         const overlay = this;
         const video = document.getElementById('bg-video');
